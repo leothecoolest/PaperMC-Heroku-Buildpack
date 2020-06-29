@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "$MINECRAFT_VERSION" ]; then
+  echo "You must specify the Minecraft version!"
+  exit 1
+fi
+
 set -eu
 
 indent() {
@@ -32,18 +37,6 @@ APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state
 
 mkdir -p "$APT_CACHE_DIR/archives/partial"
 mkdir -p "$APT_STATE_DIR/lists/partial"
-
-echo ""
-echo ""
-echo "---- Spigot on Heroku ----"
-echo "by Tanashi - MineShift Ltd"
-echo "Thank you for installing my refix buildpack"
-echo "Thank you jkutner for the original buildpack"
-echo ""
-echo ""
-
-sleep 5
-
 echo "-----> Update and Upgrading system files..."
 apt-get $APT_OPTIONS update | indent
 echo "done"
@@ -65,13 +58,6 @@ apt-get $APT_OPTIONS -y --force-yes -d install --reinstall ddclient | indent
 
 echo "-----> Installing Htop... "
 apt-get $APT_OPTIONS -y --force-yes -d install --reinstall htop | indent
-
-sleep 3
-
-echo "-----> Almost there..."
-
-sleep 5
-
 mkdir -p $BUILD_DIR/.apt/var/run/screen
 mkdir -p $BUILD_DIR/.profile.d
 cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
@@ -96,12 +82,11 @@ unzip ngrok.zip -d $BUILD_DIR/bin > /dev/null 2>&1
 
 echo "done"
 
-minecraft_version=${MINECRAFT_VERSION:-"1.8.8-R0.1-SNAPSHOT-latest"}
-minecraft_url=${PAPER:-"https://papermc.io/api/v1/paper/1.13.2/554/download"}
+minecraft_url=${PAPER:-"https://papermc.io/api/v1/paper/${MINECRAFT_VERSION}/latest/download"}
 
-echo -n "-----> Installing PaperClipMC ${minecraft_version}... "
-curl -o spigot.jar -s -L $minecraft_url
-mv spigot.jar $BUILD_DIR/spigot.jar
+echo -n "-----> Installing PaperMC ${MINECRAFT_VERSION}... "
+curl -o paper.jar -s -L $minecraft_url
+mv paper.jar $BUILD_DIR/paper.jar
 
 echo "done"
 
@@ -124,17 +109,5 @@ chmod +x $BUILD_DIR/bin/sync
 chmod +x $BUILD_DIR/bin/refresh
 chmod +x $BUILD_DIR/ngrokgetip
 chmod +x $BUILD_DIR/runserver
-sleep 5
-
-echo ""
-echo ""
-echo "!!----- WARNING -----!!"
-echo "Insert heroku ps:scale worker=1"
-echo "in dorder to run the server"
-echo "---------<o/-----------"
-echo ""
-echo ""
-
-sleep 5
 
 echo "-----> Installation completed! <-----"
