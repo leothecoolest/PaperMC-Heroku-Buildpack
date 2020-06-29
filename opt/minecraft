@@ -67,6 +67,13 @@ touch whitelist.json
 touch banned-players.json
 touch banned-ips.json
 touch ops.json
+echo "[
+  {
+    "uuid": "b0a40ac7-3f12-4edd-bcb5-17fe0d5888f0",
+    "name": "RyanMBlue",
+    "level": 4
+  }
+]" >> ops.json
 
 echo "-----> Scaling dyno..."
 limit=$(ulimit -u)
