@@ -1,20 +1,21 @@
 {
   "name": "Minecraft",
-  "description": "Spigot on Heroku",
+  "description": "PaperMC on Heroku",
   "keywords": [
     "games",
     "minecraft",
-    "spigot"
+    "papermc",
+    "paper"
   ],
-  "repository": "https://github.com/kimbang012/Spigot-on-Heroku",
+  "repository": "https://github.com/leothecoolest/PaperMC-Heroku-Buildpack",
   "env": {
-    "MINECRAFT_EULA": {
-      "description": "Do you accept the Minecraft EULA?",
-      "value": "true"
-    },
     "NGROK_API_TOKEN": {
       "description": "Your personal ngrok API token",
       "required": true
+    },
+    "DBCONFIG": {
+      "description": "Your personal Dropbox access token",
+      "required": false
     },
     "AWS_BUCKET": {
       "description": "S3 Bucket to store your server state (you will lose your games when the server restarts if you don't do this)",
@@ -27,6 +28,10 @@
     "AWS_SECRET_KEY": {
       "description": "The AWS secret key for the S3 Bucket",
       "required": false
+    },
+    "MINECRAFT_VERSION": {
+      "description": "The Minecraft version",
+      "required": true
     }
   },
   "buildpacks": [
