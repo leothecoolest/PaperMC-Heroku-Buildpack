@@ -1,10 +1,4 @@
 #!/bin/sh
-
-if [ -z "$MINECRAFT_VERSION" ]; then
-  echo "You must specify the Minecraft version!"
-  exit 1
-fi
-
 set -eu
 
 indent() {
@@ -82,6 +76,7 @@ unzip ngrok.zip -d $BUILD_DIR/bin > /dev/null 2>&1
 
 echo "done"
 
+MINECRAFT_VERSION = ENV['MINECRAFT_VERSION']
 minecraft_url=${PAPER:-"https://papermc.io/api/v1/paper/${MINECRAFT_VERSION}/latest/download"}
 
 echo -n "-----> Installing PaperMC ${MINECRAFT_VERSION}... "
